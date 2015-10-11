@@ -1,0 +1,127 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+
+
+namespace Game_GP_Qing
+{
+    
+    public class Game1 : Game
+    {
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+
+        SpriteFont font;
+
+        SoundEffect sound1;
+        SoundEffect sound2;
+        SoundEffectInstance music1;
+        SoundEffectInstance music2;
+
+        int positionX=100, positionY=100;
+
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+
+        }
+
+         
+
+
+
+        protected override void Initialize()
+        {
+            // TODO: Add your initialization logic here
+
+            base.Initialize();
+        }
+
+        
+
+
+
+        protected override void LoadContent()
+        {
+           
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            font = Content.Load<SpriteFont>(@"font/Arial");
+
+            sound1 = Content.Load<SoundEffect>(@"sound/track");
+            music1 = sound1.CreateInstance();
+            music1.IsLooped = true;
+            music1.Play();
+
+            sound2 = Content.Load<SoundEffect>(@"sound/spray");
+            music2 = sound2.CreateInstance();
+            music2.IsLooped = false;
+
+           
+
+        }
+
+
+
+
+
+        protected override void UnloadContent()
+        {
+          
+        }
+
+      
+
+
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            KeyboardState keyboardstate = Keyboard.GetState();
+
+            //effect sound and moving
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                positionX -= 10;
+                music2.Play();
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                positionX += 10;
+                music2.Play();
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                positionY += 10;
+                music2.Play();
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                positionY -= 10;
+                music2.Play();
+            }
+            else music2.Stop();
+
+           
+            base.Update(gameTime);
+        }
+
+       
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "Hello world", new Vector2(positionX, positionY), Color.Black);
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+    }
+}
